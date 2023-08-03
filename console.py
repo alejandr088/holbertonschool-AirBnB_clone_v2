@@ -118,13 +118,57 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        # Split args into classs name & params
+        args_list = args.split()
+        class_name = args_list[0]
+        params = args_list[1:]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[class_name]()
+
+        # Process params:
+        for param in params:
+            key_value = param.split('=')
+            if len(key_value) != 2:
+                # Print to show if a value is invalid.
+                print(f"** Invalid parameter: {param} **")
+                # Skip invalid params
+                continue
+            key = key_value[0]
+            value = key_value[1]
+
+            if value.startswith('"') and value.endswith('"'):
+                # Process str ---->
+                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+            elif '.' in value:
+                # Process float ---->
+                try:
+                    value = float(value)
+                except ValueError:
+                    # Print to show if a value is invalid.
+                    print(f"** Invalid float value: {value} **")
+                    # Skip invalid floats
+                    continue
+            else:
+                # Process int ---->
+                try:
+                    value = int(value)
+                except ValueError:
+                    # Print to show if a value is invalid.
+                    print(f"** Invalid integer value: {value} **")
+                    # Skip invalid ints
+                    continue
+
+            setattr(new_instance, key, value)
+
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
+        # storage.save() is not needed anymore bcuz FileStorage
+        # engine save objects automatically whenever set attrs 
+        # or create new instances.
 
     def help_create(self):
         """ Help information for the create method """
