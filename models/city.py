@@ -6,8 +6,6 @@ import sqlalchemy
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
-from sqlalchemy.orm import relationship
-from os import getenv
 
 
 class City(BaseModel):
