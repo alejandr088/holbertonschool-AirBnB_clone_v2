@@ -9,12 +9,12 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """Returns a dictionary of models"""
         if cls:
             my_dict = {}
-            for key, value in self.__objects.items():
-                if FileStorage.__objects[key].__class__ == cls:
-                    my_dict[key] = str(value)
+            for k, v in self.__objects.items():
+                if FileStorage.__objects[k].__class__ == cls:
+                    my_dict[k] = str(v)
             return my_dict
         return self.__objects
 
@@ -42,10 +42,10 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
@@ -56,8 +56,9 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        if obj is not None:
-            key = f"{type(obj).__name__}.{obj.id}"
-            del FileStorage.__objects.[key]
-        else:
+        """delete objects from the dictionary"""
+        if obj is None:
             return
+        else:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            del FileStorage.__objects[key]
