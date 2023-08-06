@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
             key_value = param.split('=')
             if len(key_value) != 2:
                 # Print to show if a value is invalid.
-                print(f"** Invalid parameter: {param} **")
+                # print(f"** Invalid parameter: {param} **")
                 # Skip invalid params
                 continue
             key = key_value[0]
@@ -149,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
                     value = float(value)
                 except ValueError:
                     # Print to show if a value is invalid.
-                    print(f"** Invalid float value: {value} **")
+                    # print(f"** Invalid float value: {value} **")
                     # Skip invalid floats
                     continue
             else:
@@ -158,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
                     value = int(value)
                 except ValueError:
                     # Print to show if a value is invalid.
-                    print(f"** Invalid integer value: {value} **")
+                    # print(f"** Invalid integer value: {value} **")
                     # Skip invalid ints
                     continue
 
@@ -250,7 +250,7 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:

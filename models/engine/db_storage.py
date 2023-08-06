@@ -15,11 +15,13 @@ class DBStorage:
         password = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST", "localhost")
         database = getenv("HBNB_MYSQL_DB")
-        self.__engine =\
-            create_engine(
-                          f"mysql+mysqldb://\
-                          {user}:{password}@{host}/{database}",
-                          pool_pre_ping=True)
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}".format(user,
+                                                 password,
+                                                 host,
+                                                 database),
+            pool_pre_ping=True
+            )
 
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
@@ -34,7 +36,7 @@ class DBStorage:
         from models.review import Review
         temp_dict = {}
         if cls:
-            temp_dict = elf.__session.query(cls).all()
+            temp_dict = self.__session.query(cls).all()
         else:
             temp_dict = self.__session.query(User).all()
             temp_dict.extend(self.__session.query(State).all())
@@ -67,7 +69,3 @@ class DBStorage:
             sessionmaker(bind=self.__engine,
                          expire_on_commit=False))
         self.__session = Session()
-
-    def close(self):
-        """close connection"""
-        self.__session.close()

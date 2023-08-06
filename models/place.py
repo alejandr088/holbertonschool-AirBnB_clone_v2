@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship, backref
 from os import getenv
+from models.review import Review
+from models.amenity import Amenity
 
 
 class Place(BaseModel, Base):
@@ -36,7 +38,7 @@ class Place(BaseModel, Base):
                     if review.place_id == self.id]
 
     place_amenity = \
-        table('place_amenity', Base.metadata,
+        Table('place_amenity', Base.metadata,
               Column('place_id', String(60), ForeignKey('places.id'),
                      primary_key=True, nullable=False),
               Column('amenity_id', String(60), ForeignKey('amenities.id'),
