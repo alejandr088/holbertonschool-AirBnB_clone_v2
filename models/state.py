@@ -5,6 +5,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship, backref
 from models.city import City
 from os import getenv
+import models
 
 
 class State(BaseModel, Base):
@@ -23,3 +24,8 @@ class State(BaseModel, Base):
                 if c.state_id == self.id:
                     cities_objs.append(c)
             return cities_objs
+
+    def close(self):
+        """Deserialize JSON"""
+        if getenv('HBNB_TYPE_STORAGE') == 'db':
+            models.storage.close()

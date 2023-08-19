@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session, Session
 from models.base_model import Base
 from os import getenv
 
@@ -69,3 +69,7 @@ class DBStorage:
             sessionmaker(bind=self.__engine,
                          expire_on_commit=False))
         self.__session = Session()
+
+    def close(self):
+        """Call remove method(private)"""
+        self.__session.remove()
