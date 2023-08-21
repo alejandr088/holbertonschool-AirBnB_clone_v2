@@ -46,14 +46,15 @@ class FileStorage:
             'State': State, 'City': City, 'Amenity': Amenity,
             'Review': Review
         }
-        try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
-            pass
+        if os.path.exists(FileStorage.__file_path):
+            try:
+                temp = {}
+                with open(FileStorage.__file_path, 'r') as f:
+                    temp = json.load(f)
+                    for key, val in temp.items():
+                        self.all()[key] = classes[val['__class__']](**val)
+            except FileNotFoundError:
+                pass
 
     def delete(self, obj=None):
         """delete objects from the dictionary"""
