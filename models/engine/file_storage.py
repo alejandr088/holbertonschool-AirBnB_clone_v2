@@ -22,7 +22,7 @@ class FileStorage:
             my_dict = {}
             for k, v in self.__objects.items():
                 if FileStorage.__objects[k].__class__ == cls:
-                    my_dict[k] = str(v)
+                    my_dict[k] = v
             return my_dict
         return self.__objects
 
