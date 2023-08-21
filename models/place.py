@@ -27,14 +27,14 @@ class Place(BaseModel, Base):
         reviews = relationship('Review', cascade='all,\
                                 delete-orphan', backref='place')
     # Getter attr for FileStorage ---->
-    if getenv('HBNB_TYPE_STORAGE') == 'file':
+    else:
         @property
         def reviews(self):
             """
             Funct to retrieve a list of Review instances w/certain conds.
             """
             from models import storage
-            return [review for review in storage.all(review).values()
+            return [review for review in storage.all(Review).values()
                     if review.place_id == self.id]
 
     place_amenity = \
