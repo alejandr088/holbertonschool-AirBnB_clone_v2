@@ -13,7 +13,7 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         cities = relationship("City", cascade="all, delete", backref="state")
-    else:
+    elif getenv('HBNB_TYPE_STORAGE') == 'fs':
         @property
         def cities(self):
             """returns a list of cities"""
@@ -23,4 +23,3 @@ class State(BaseModel, Base):
                 if c.state_id == self.id:
                     cities_objs.append(c)
             return cities_objs
-

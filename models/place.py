@@ -23,7 +23,7 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     # Relationship rep with Review class for DBStorage ---->
-    if getenv('HBNN_TYPE_STORAGE') == 'db':
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship('Review', cascade='all,\
                                 delete-orphan', backref='place')
     # Getter attr for FileStorage ---->
