@@ -7,24 +7,22 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def teardown_db(exception):
-    """Close SQLAlchemy session"""
-    storage.close()
-
-
 @app.route('/states', strict_slashes=False)
 @app.route('/states/<id>', strict_slashes=False)
 def states_by_id(id):
     """States sorted by id"""
     states = storage.all(State)
-    cons_state = {}
-    obj_id = 0
+    cons_state = []
     for k, v in states.items():
-        obj_id = k.split('.')
-        if obj_id[1] == id:
-            cons_state = {k: v}
+        if k.split[1] == id:
+            cons_state.append(v)
     return render_template('9-states.html', states=cons_state, id=id)
+
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    """Close SQLAlchemy session"""
+    storage.close()
 
 
 if __name__ == '__main__':
