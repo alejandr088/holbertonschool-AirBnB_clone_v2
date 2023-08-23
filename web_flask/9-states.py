@@ -15,13 +15,15 @@ def states_list():
 
 
 @app.route('/states/<id>', strict_slashes=False)
-def states_by_id(id=None):
+def states_by_id(id):
     """States sorted by id"""
     states = storage.all(State)
-    cons_state = []
+    cons_state = {}
+    obj_id = 0
     for k, v in states.items():
-        if k.split('.')[1] == id:
-            cons_state = {k: v}
+        obj_id = k.split('.')
+        if obj_id[1] == id:
+            cons_state = {k, v}
     return render_template('9-states.html', states=cons_state, id=id)
 
 
