@@ -3,13 +3,14 @@
 from flask import Flask, render_template
 from models import storage
 from models.state import State
+storage.all()
 
 app = Flask(__name__)
 
 
 @app.route('/states', strict_slashes=False)
 @app.route('/states/<id>', strict_slashes=False)
-def states_by_id(id):
+def states_by_id(id=None):
     """States sorted by id"""
     states = storage.all(State)
     cons_state = []
