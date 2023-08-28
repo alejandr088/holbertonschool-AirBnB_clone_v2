@@ -3,8 +3,15 @@
 from flask import Flask, render_template
 from models import storage
 from models.state import State
+from models.city import City
 
 app = Flask(__name__)
+
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    """Close SQLAlchemy session"""
+    storage.close()
 
 
 @app.route('/states', strict_slashes=False)
@@ -18,19 +25,14 @@ def states_list():
 def states_by_id(id):
     """States sorted by id"""
     states = storage.all(State)
-    cons_state = {}
+    cons_state = None
     obj_id = 0
     for k, v in states.items():
         obj_id = k.split('.')
         if obj_id[1] == id:
-            cons_state = {k, v}
+            cons_state = v
+            break
     return render_template('9-states.html', states=cons_state, id=id)
-
-
-@app.teardown_appcontext
-def teardown_db(exception):
-    """Close SQLAlchemy session"""
-    storage.close()
 
 
 if __name__ == '__main__':
